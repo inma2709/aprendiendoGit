@@ -138,6 +138,7 @@ Indicadores de que la transformación funciona:
 
 </details>
 
-[Flujo de trabajo de Git](public/esquemaGit.png)
+![Flujo de trabajo de Git](public/esquemaGit.png)
+
 
 
