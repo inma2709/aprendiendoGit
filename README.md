@@ -8,10 +8,10 @@ El proyecto transforma un contenido técnico tradicional en una **experiencia de
 
 ## 🧠 Objetivo del Proyecto
 
-- Reducir la curva de aprendizaje de Git
-- Facilitar la comprensión de conceptos abstractos mediante analogías y visuales
-- Fomentar buenas prácticas profesionales desde el inicio
-- Aumentar la retención y el engagement del alumnado
+- Reducir la curva de aprendizaje de Git  
+- Facilitar la comprensión de conceptos abstractos mediante analogías y visuales  
+- Fomentar buenas prácticas profesionales desde el inicio  
+- Aumentar la retención y el engagement del alumnado  
 
 ---
 
@@ -57,6 +57,10 @@ El proyecto transforma un contenido técnico tradicional en una **experiencia de
 - Definición de los **3 mundos de Git**
 - Flujo de trabajo explicado de forma visual
 - Actividades prácticas tipo laboratorio
+
+<p align="center">
+  <img src="public/esquema.png" alt="Flujo de trabajo de Git" width="700">
+</p>
 
 ### 📌 Capítulo 4: Commits Profesionales
 - El commit como herramienta de comunicación técnica
@@ -137,8 +141,3 @@ Indicadores de que la transformación funciona:
 - Nota relevante
 
 </details>
-
-![Flujo de trabajo de Git](./public/esquema.png)
-
-
-
