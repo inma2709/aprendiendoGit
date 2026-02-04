@@ -138,5 +138,5 @@ Indicadores de que la transformación funciona:
 
 </details>
 
-🖼️ ![Flujo de trabajo de Git](public/git(2).png)
+🖼️ ![Flujo de trabajo de Git](/esquemaGit.png)
 
