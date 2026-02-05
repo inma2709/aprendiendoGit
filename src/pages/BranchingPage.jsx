@@ -94,7 +94,7 @@ const BranchingPage = () => {
           <div className="space-y-6">
             <div className="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 rounded-lg p-6">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                🌱 ¿Qué son las Ramas? (Para Principiantes)
+                🌱 ¿Qué son las Ramas? 
               </h2>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
                 Imagina las ramas como <strong>copias paralelas</strong> de tu proyecto donde puedes experimentar 
@@ -133,7 +133,7 @@ const BranchingPage = () => {
               <div className="mt-4 p-3 bg-blue-100 dark:bg-blue-800/30 rounded">
                 <p className="text-sm text-blue-800 dark:text-blue-200">
                   💡 <strong>Regla de oro:</strong> Tanto main como master son LA RAMA SAGRADA donde solo va código 
-                  100% funcional y probado. ¡Nunca desarrolles directamente aquí!
+                  100% funcional y probado. ¡Nunca desarrolles directamente aquí! Y recuerda mejor main que master, aunque ambos funcionan igual.
                 </p>
               </div>
             </div>
@@ -150,10 +150,14 @@ const BranchingPage = () => {
                   <div className="flex-1">
                     <h4 className="font-medium text-gray-900 dark:text-white">Crear rama develop</h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Aunque trabajes solo, SIEMPRE crea una rama develop para tu desarrollo diario
+                      Aunque trabajes solo, SIEMPRE crea una rama develop para tu desarrollo diario. Esta orden crea y te cambia a la rama develop en un solo paso:
                     </p>
                     <code className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded mt-1 inline-block">
                       git checkout -b develop
+                    </code>
+                    <p>Si sólo quieres cambiar a develop sin crearla, usa:</p>
+                    <code className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded mt-1 inline-block">
+                      git checkout develop
                     </code>
                   </div>
                 </div>

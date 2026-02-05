@@ -44,7 +44,7 @@ const Sidebar = ({ isOpen, isCollapsed, completedLessons, onClose, onToggleColla
         { path: "/git-desktop", title: "Git Visual (Sin Terminal)", time: "20 min", difficulty: "Principiante", icon: "🖥️" },
         { path: "/workflow", title: "Flujo Profesional", time: "30 min", difficulty: "Intermedio", icon: "🏢" },
         { path: "/cheat-sheet", title: "Chuleta de Comandos", time: "Referencia", difficulty: "Todos", icon: "📖" },
-        { path: "/advanced", title: "Técnicas Avanzadas", time: "40 min", difficulty: "Avanzado", icon: "🚀" }
+        { path: "/advanced", title: "Resumen subir archivos", time: "40 min", difficulty: "Todos", icon: "🚀" }
       ]
     }
   ]

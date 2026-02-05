@@ -111,7 +111,7 @@ const StagingAreaPage = () => {
                 {/* Tu imagen personalizada */}
                 <div className="flex justify-center">
                   <img 
-                    src="/git.png" 
+                    src="./public/git.png" 
                     alt="Flujo Visual del Staging Area - Working Directory, Staging Area y Repository" 
                     className="w-full max-w-3xl mx-auto rounded-lg shadow-lg border border-gray-200 dark:border-gray-600"
                   />

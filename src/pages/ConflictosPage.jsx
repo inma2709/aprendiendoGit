@@ -1,6 +1,20 @@
 import { useState, useEffect } from 'react'
 import { Link, useOutletContext } from 'react-router-dom'
-import { CheckCircle2, ArrowRight, ArrowLeft, AlertTriangle, Zap, BookOpen, Copy, Clock, AlertCircle, CheckSquare, GitMerge, Users, FileX, Settings } from 'lucide-react'
+import {
+  CheckCircle2,
+  ArrowRight,
+  ArrowLeft,
+  AlertTriangle,
+  BookOpen,
+  Copy,
+  Clock,
+  AlertCircle,
+  CheckSquare,
+  GitMerge,
+  Settings,
+  FileX,
+  Zap
+} from 'lucide-react'
 
 const ConflictosPage = () => {
   const { markLessonCompleted } = useOutletContext()
@@ -43,23 +57,24 @@ const ConflictosPage = () => {
           </div>
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Resolución de Conflictos
+              Conflictos en Git (sin miedo)
             </h1>
             <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
               <div className="flex items-center space-x-1">
                 <Clock className="w-4 h-4" />
-                <span>25 min</span>
+                <span>18 min</span>
               </div>
               <div className="flex items-center space-x-1">
                 <BookOpen className="w-4 h-4" />
-                <span>Intermedio</span>
+                <span>Principiante</span>
               </div>
             </div>
           </div>
         </div>
-        
+
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Los conflictos son normales en el desarrollo colaborativo. Aprende a resolverlos eficientemente.
+          Un conflicto no es un “error”: es Git diciendo{" "}
+          <strong>“no sé cuál de estos dos cambios quieres”</strong>. Tú decides.
         </p>
       </div>
 
@@ -90,208 +105,150 @@ const ConflictosPage = () => {
 
       {/* Content */}
       <div className="space-y-6">
+        {/* TAB: CONCEPTO */}
         {activeTab === 'concept' && (
           <div className="space-y-6">
             <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                ¿Qué son los Conflictos?
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                ¿Qué es un conflicto en Git?
               </h2>
-              <p className="text-gray-700 dark:text-gray-300 mb-4">
-                Los conflictos ocurren cuando Git no puede automáticamente fusionar cambios 
-                porque dos personas modificaron las mismas líneas de código de formas diferentes.
+              <p className="text-gray-700 dark:text-gray-300">
+                Un conflicto aparece cuando Git intenta juntar cambios (merge/pull) y ve que{" "}
+                <strong>dos versiones han tocado la misma zona del mismo archivo</strong> y no puede decidir automáticamente.
               </p>
             </div>
 
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Cuándo Aparecen Conflictos
+                ¿Por qué pasan? (ejemplo súper típico)
               </h3>
-              
-              <div className="grid gap-4">
-                <div className="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
-                    <GitMerge className="w-4 h-4 text-red-500" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white">Merge Conflicts</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Al fusionar ramas que modificaron las mismas líneas
-                    </p>
-                    <code className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded mt-1 inline-block">
-                      git merge feature-branch
-                    </code>
-                  </div>
+
+              <div className="grid md:grid-cols-2 gap-4 text-sm">
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <p className="font-medium text-gray-900 dark:text-white mb-2">Tú cambias:</p>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    En <code className="font-mono">config.txt</code> pones <strong>Descuento: 15%</strong>
+                  </p>
                 </div>
-                
-                <div className="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
-                    <ArrowRight className="w-4 h-4 text-orange-500" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white">Pull Conflicts</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Al hacer pull cuando hay cambios locales conflictivos
-                    </p>
-                    <code className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded mt-1 inline-block">
-                      git pull origin main
-                    </code>
-                  </div>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <p className="font-medium text-gray-900 dark:text-white mb-2">Tu compañero cambia:</p>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    En el mismo archivo pone <strong>Descuento: 20%</strong>
+                  </p>
                 </div>
-                
-                <div className="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                    <CheckSquare className="w-4 h-4 text-blue-500" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white">Rebase Conflicts</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Durante rebase cuando commits tienen conflictos
-                    </p>
-                    <code className="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded mt-1 inline-block">
-                      git rebase main
-                    </code>
-                  </div>
+              </div>
+
+              <div className="mt-5 flex items-start space-x-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+                <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
+                <div>
+                  <h4 className="font-medium text-yellow-800 dark:text-yellow-200 mb-1">
+                    Mensaje mental para recordar
+                  </h4>
+                  <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                    Conflicto = “Hay dos respuestas posibles y Git no sabe cuál quieres”.
+                  </p>
                 </div>
               </div>
             </div>
 
             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Anatomía de un Conflicto
+                Cómo se ve un conflicto por dentro
               </h3>
+
               <div className="bg-black rounded-lg p-4">
-                <pre className="text-sm text-gray-300">
-{`<<<<<<< HEAD (Current Change)
-function calculate() {
-    return price * 0.15; // 15% tax
-}
+                <pre className="text-sm text-gray-300 overflow-x-auto">
+{`<<<<<<< HEAD
+Descuento: 15%
 =======
-function calculate() {
-    return price * 0.18; // 18% tax  
-}
->>>>>>> feature-branch (Incoming Change)`}
+Descuento: 20%
+>>>>>>> feature-branch`}
                 </pre>
               </div>
+
               <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                 <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded">
                   <strong className="text-blue-700 dark:text-blue-300">{'<<<<<<< HEAD'}</strong>
-                  <p className="text-blue-600 dark:text-blue-400">Tu cambio actual</p>
+                  <p className="text-blue-600 dark:text-blue-400">Tu versión (lo que tenías)</p>
                 </div>
                 <div className="bg-gray-100 dark:bg-gray-600 p-3 rounded">
-                  <strong className="text-gray-700 dark:text-gray-300">{'======='}</strong>
-                  <p className="text-gray-600 dark:text-gray-400">Separador</p>
+                  <strong className="text-gray-700 dark:text-gray-200">{'======='}</strong>
+                  <p className="text-gray-600 dark:text-gray-300">Separador</p>
                 </div>
                 <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded">
-                  <strong className="text-green-700 dark:text-green-300">{'>>>>>>> branch'}</strong>
-                  <p className="text-green-600 dark:text-green-400">Cambio entrante</p>
+                  <strong className="text-green-700 dark:text-green-300">{'>>>>>>> rama'}</strong>
+                  <p className="text-green-600 dark:text-green-400">La otra versión (lo que llega)</p>
                 </div>
+              </div>
+
+              <div className="mt-5 bg-white/60 dark:bg-white/5 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  Resolver un conflicto significa:{" "}
+                  <strong>elegir una versión o combinar ambas</strong> y borrar los marcadores.
+                </p>
               </div>
             </div>
           </div>
         )}
 
+        {/* TAB: DETECCIÓN */}
         {activeTab === 'detection' && (
           <div className="space-y-6">
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                Detectar Conflictos
+                ¿Cómo sé que tengo un conflicto?
               </h2>
 
-              <div className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <h3 className="font-medium text-gray-900 dark:text-white mb-2">
-                    Comandos de diagnóstico
+                    1) Git te lo dice
                   </h3>
-                  <div className="bg-black rounded-lg p-4 relative">
-                    <pre className="text-sm text-gray-300">
-{`# Ver estado del repositorio
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Verás mensajes tipo <strong>CONFLICT</strong> y el merge/pull se para.
+                  </p>
+                </div>
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">
+                    2) <code className="font-mono">git status</code> lo confirma
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Te listará los archivos en conflicto.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 bg-black rounded-lg p-4 relative">
+                <pre className="text-sm text-gray-300 overflow-x-auto">
+{`# El comando nº1 cuando algo va raro:
 git status
 
-# Ver archivos con conflictos
-git diff --name-only --diff-filter=U
+# Ver lista de archivos con conflicto:
+git diff --name-only --diff-filter=U`}
+                </pre>
+                <button
+                  onClick={() => copyToClipboard('git status\ngit diff --name-only --diff-filter=U', 'detect')}
+                  className="absolute top-2 right-2 p-1 rounded hover:bg-gray-700"
+                  aria-label="Copiar comandos de detección"
+                >
+                  <Copy className="w-4 h-4 text-gray-400" />
+                </button>
+                {copiedCode === 'detect' && (
+                  <span className="absolute bottom-2 right-2 text-xs text-green-400">¡Copiado!</span>
+                )}
+              </div>
 
-# Ver conflictos específicos
-git diff
-
-# Ver diferencias detalladas
-git log --merge --oneline`}
-                    </pre>
-                    <button
-                      onClick={() => copyToClipboard('git status', 'detect-basic')}
-                      className="absolute top-2 right-2 p-1 rounded hover:bg-gray-700"
-                    >
-                      <Copy className="w-4 h-4 text-gray-400" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg p-4">
-                  <h3 className="font-medium text-red-800 dark:text-red-200 mb-2">
-                    🚨 Señales de Conflictos
-                  </h3>
-                  <ul className="text-sm text-red-700 dark:text-red-300 space-y-1">
-                    <li>• Error: "CONFLICT (content): Merge conflict in file.txt"</li>
-                    <li>• Status muestra "both modified" o "unmerged paths"</li>
-                    <li>• Archivos contienen marcadores {'<<<<<<< ======= >>>>>>>'}</li>
-                    <li>• Merge/rebase se detiene esperando resolución</li>
-                  </ul>
-                </div>
-
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">
-                    Ejemplo de detección
-                  </h3>
-                  <div className="bg-black rounded-lg p-4 relative">
-                    <pre className="text-sm text-gray-300">
-{`$ git merge feature-branch
-Auto-merging src/calculator.js
-CONFLICT (content): Merge conflict in src/calculator.js
-Automatic merge failed; fix conflicts and then commit the result.
-
-$ git status
-On branch main
-You have unmerged paths.
-  (fix conflicts and run "git commit")
-
-Unmerged paths:
-  (use "git add <file>..." to mark resolution)
-        both modified:   src/calculator.js
-
-$ git diff --name-only --diff-filter=U
-src/calculator.js`}
-                    </pre>
-                    <button
-                      onClick={() => copyToClipboard('git status\ngit diff --name-only --diff-filter=U', 'detect-example')}
-                      className="absolute top-2 right-2 p-1 rounded hover:bg-gray-700"
-                    >
-                      <Copy className="w-4 h-4 text-gray-400" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
-                    <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">
-                      ✅ Antes del merge
-                    </h4>
-                    <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-                      <li>• <code className="bg-blue-200 dark:bg-blue-800 px-1 rounded text-xs">git log --oneline main..feature</code></li>
-                      <li>• <code className="bg-blue-200 dark:bg-blue-800 px-1 rounded text-xs">git diff main feature</code></li>
-                      <li>• Revisar archivos modificados</li>
-                      <li>• Comunicar con el equipo</li>
-                    </ul>
-                  </div>
-                  
-                  <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4">
-                    <h4 className="font-medium text-orange-900 dark:text-orange-100 mb-2">
-                      🔍 Durante conflictos
-                    </h4>
-                    <ul className="text-sm text-orange-800 dark:text-orange-200 space-y-1">
-                      <li>• <code className="bg-orange-200 dark:bg-orange-800 px-1 rounded text-xs">git status</code> frecuentemente</li>
-                      <li>• Abrir archivos en editor</li>
-                      <li>• Usar herramientas visuales</li>
-                      <li>• Documentar decisiones</li>
-                    </ul>
+              <div className="mt-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg p-4">
+                <div className="flex items-start space-x-3">
+                  <FileX className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" />
+                  <div>
+                    <h3 className="font-medium text-red-800 dark:text-red-200 mb-1">
+                      Señal clara
+                    </h3>
+                    <p className="text-sm text-red-700 dark:text-red-300">
+                      Si abres un archivo y ves <code className="font-mono">{'<<<<<<< ======= >>>>>>>'}</code>,
+                      estás dentro de un conflicto.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -299,264 +256,269 @@ src/calculator.js`}
           </div>
         )}
 
+        {/* TAB: RESOLUCIÓN */}
         {activeTab === 'resolution' && (
           <div className="space-y-6">
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                Estrategias de Resolución
+                Cómo resolver un conflicto (en 4 pasos)
               </h2>
 
-              <div className="space-y-4">
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">
-                    Resolución manual (recomendado)
-                  </h3>
-                  <div className="bg-black rounded-lg p-4 relative">
-                    <pre className="text-sm text-gray-300">
-{`# 1. Abrir archivo conflictivo en editor
-code src/calculator.js
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                <ol className="text-sm text-gray-700 dark:text-gray-300 space-y-2">
+                  <li><strong>1)</strong> Abre el archivo con conflicto</li>
+                  <li><strong>2)</strong> Decide qué texto/código debe quedar</li>
+                  <li><strong>3)</strong> Borra los marcadores <code className="font-mono">{'<<<<<<< ======= >>>>>>>'}</code></li>
+                  <li><strong>4)</strong> Guarda, luego <code className="font-mono">git add</code> y <code className="font-mono">git commit</code></li>
+                </ol>
+              </div>
 
-# 2. Buscar y editar marcadores de conflicto
-# Eliminar: <<<<<<< HEAD, =======, >>>>>>> branch
-# Mantener código deseado
+              <div className="mt-4 bg-black rounded-lg p-4 relative">
+                <pre className="text-sm text-gray-300 overflow-x-auto">
+{`# 1) comprobar qué pasa
+git status
 
-# 3. Marcar como resuelto
-git add src/calculator.js
-
-# 4. Completar merge
-git commit -m "merge: resolve calculator conflict"
-
-# 5. Verificar resolución
-git log --oneline -3`}
-                    </pre>
-                    <button
-                      onClick={() => copyToClipboard('git add archivo-resuelto.txt\ngit commit -m "merge: resolve conflict"', 'resolve-manual')}
-                      className="absolute top-2 right-2 p-1 rounded hover:bg-gray-700"
-                    >
-                      <Copy className="w-4 h-4 text-gray-400" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                  <h3 className="font-medium text-gray-900 dark:text-white mb-2">
-                    Herramientas de merge
-                  </h3>
-                  <div className="bg-black rounded-lg p-4 relative">
-                    <pre className="text-sm text-gray-300">
-{`# Configurar herramienta de merge
-git config --global merge.tool vscode
-git config --global mergetool.vscode.cmd 'code --wait $MERGED'
-
-# Usar herramienta visual
-git mergetool
-
-# Otras opciones populares
-git config --global merge.tool meld    # Linux
-git config --global merge.tool p4merge # Cross-platform
-git config --global merge.tool kdiff3  # Cross-platform`}
-                    </pre>
-                    <button
-                      onClick={() => copyToClipboard('git mergetool', 'merge-tool')}
-                      className="absolute top-2 right-2 p-1 rounded hover:bg-gray-700"
-                    >
-                      <Copy className="w-4 h-4 text-gray-400" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="grid gap-4">
-                  <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
-                    <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">
-                      📝 Estrategia: Aceptar una versión
-                    </h4>
-                    <div className="text-sm text-blue-800 dark:text-blue-200 mb-2">
-                      Cuando quieres usar completamente una versión:
-                    </div>
-                    <div className="bg-black rounded p-3">
-                      <pre className="text-xs text-gray-300">
-{`# Usar tu versión (theirs = incoming)
-git checkout --ours archivo.txt
-
-# Usar su versión (ours = current)  
-git checkout --theirs archivo.txt
-
+# 2) cuando lo hayas dejado bien en el archivo...
 git add archivo.txt
-git commit`}
-                      </pre>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
-                    <h4 className="font-medium text-green-900 dark:text-green-100 mb-2">
-                      🔧 Estrategia: Combinar cambios
-                    </h4>
-                    <div className="text-sm text-green-800 dark:text-green-200 mb-2">
-                      Cuando necesitas partes de ambas versiones:
-                    </div>
-                    <ol className="text-sm text-green-700 dark:text-green-300 space-y-1">
-                      <li>1. Abrir archivo en editor</li>
-                      <li>2. Eliminar marcadores {'<<<<<<< ======= >>>>>>>'}</li>
-                      <li>3. Combinar lógicamente ambos cambios</li>
-                      <li>4. Probar que funciona correctamente</li>
-                      <li>5. Hacer git add y git commit</li>
-                    </ol>
-                  </div>
-                </div>
 
-                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
-                  <div className="flex items-start space-x-3">
-                    <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
-                    <div>
-                      <h3 className="font-medium text-yellow-800 dark:text-yellow-200 mb-2">
-                        🛡️ Cancelar merge si es necesario
-                      </h3>
-                      <div className="text-sm text-yellow-700 dark:text-yellow-300 space-y-2">
-                        <div className="bg-black rounded p-3">
-                          <pre className="text-xs text-gray-300">
-{`# Cancelar merge en progreso
-git merge --abort
+# 3) terminar el merge
+git commit -m "merge: resolve conflict"`}
+                </pre>
+                <button
+                  onClick={() => copyToClipboard('git status\ngit add archivo.txt\ngit commit -m "merge: resolve conflict"', 'resolve')}
+                  className="absolute top-2 right-2 p-1 rounded hover:bg-gray-700"
+                  aria-label="Copiar pasos de resolución"
+                >
+                  <Copy className="w-4 h-4 text-gray-400" />
+                </button>
+                {copiedCode === 'resolve' && (
+                  <span className="absolute bottom-2 right-2 text-xs text-green-400">¡Copiado!</span>
+                )}
+              </div>
 
-# Volver al estado anterior
-git reset --hard HEAD
-
-# Ver estado limpio
-git status`}
-                          </pre>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              <div className="mt-6 flex items-start space-x-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+                <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
+                <div>
+                  <h3 className="font-medium text-yellow-800 dark:text-yellow-200 mb-1">
+                    ¿Qué decisión tomo?
+                  </h3>
+                  <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                    En clase, lo normal es: <strong>quedarme con una opción</strong> o <strong>combinar</strong>.
+                    Lo importante es que el archivo quede <strong>coherente</strong> y sin marcadores.
+                  </p>
                 </div>
               </div>
+
+             <details className="mt-4 bg-white/60 dark:bg-white/5 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+  <summary className="cursor-pointer font-medium text-gray-900 dark:text-white">
+    Si quiero cancelar el merge (volver atrás)
+  </summary>
+
+  <div className="mt-3 text-sm text-gray-600 dark:text-gray-300 space-y-3">
+    <p>
+      <strong>Primero: ¿qué es un merge?</strong><br />
+      Un <code className="font-mono">merge</code> es la acción de <strong>unir cambios</strong> de dos “líneas de trabajo”
+      (normalmente dos ramas) en una sola. Es decir: Git intenta juntar lo que tú tienes con lo que viene de otra rama
+      (o de GitHub cuando haces un pull).
+    </p>
+
+    <p className="italic">
+      Piensa en un merge como: “quiero mezclar dos versiones del mismo proyecto”.
+    </p>
+
+    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+      <p className="font-medium text-gray-900 dark:text-white mb-2">Ejemplos típicos de merge:</p>
+      <ul className="list-disc pl-5 space-y-1">
+        <li>
+          Cuando haces <code className="font-mono">git merge feature</code> para unir una rama a <code className="font-mono">main</code>.
+        </li>
+        <li>
+          Cuando haces <code className="font-mono">git pull</code> y Git necesita unir lo remoto con lo local (porque pull trae cambios y los mezcla).
+        </li>
+      </ul>
+    </div>
+
+    <p>
+      <strong>¿Cuándo me interesa “cancelar el merge”?</strong><br />
+      Cuando has intentado mezclar cambios y <strong>algo sale mal</strong>:
+      porque aparecen conflictos, porque no entiendes qué cambios están entrando,
+      porque te das cuenta de que <strong>no era el momento</strong> de hacer ese merge,
+      o porque prefieres revisar primero y luego intentarlo con más calma.
+    </p>
+
+    <div className="mt-2 flex items-start space-x-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+      <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
+      <div>
+        <p className="font-medium text-yellow-800 dark:text-yellow-200 mb-1">Señal típica de que puedes abortar</p>
+        <p className="text-sm text-yellow-700 dark:text-yellow-300">
+          Has hecho un merge y Git se ha quedado “a medias”, por ejemplo, con mensajes de conflicto o con{" "}
+          <code className="font-mono">Unmerged paths</code> en <code className="font-mono">git status</code>.
+        </p>
+      </div>
+    </div>
+
+    <p>
+      <strong>¿Qué es exactamente lo que se anula?</strong><br />
+      Se anula el <strong>intento de merge que está en progreso</strong>. Es decir:
+    </p>
+
+    <ul className="list-disc pl-5 space-y-1">
+      <li>Git deja de intentar mezclar los cambios.</li>
+      <li>Se eliminan los “estados intermedios” del merge (la operación a medias).</li>
+      <li>Tu repositorio vuelve al punto en el que estabas <strong>antes de ejecutar el merge</strong>.</li>
+    </ul>
+
+    <p>
+      Importante: <strong>no borra tus commits anteriores</strong>. Solo deshace la operación de mezcla que todavía no se terminó.
+    </p>
+
+    <div className="bg-black text-gray-300 rounded-lg p-3 text-xs overflow-x-auto">
+      <pre>{`git merge --abort`}</pre>
+    </div>
+
+    <p>
+      <strong>¿Cómo funciona por dentro?</strong><br />
+      Cuando haces un merge y hay conflictos, Git crea un “estado de merge en curso”.
+      En ese estado:
+    </p>
+
+    <ul className="list-disc pl-5 space-y-1">
+      <li>Git marca archivos como en conflicto.</li>
+      <li>Puede dejar archivos con marcadores <code className="font-mono">{'<<<<<<< ======= >>>>>>>'}</code>.</li>
+      <li>Git espera a que tú resuelvas y hagas <code className="font-mono">git add</code> + <code className="font-mono">git commit</code>.</li>
+    </ul>
+
+    <p>
+      <code className="font-mono">git merge --abort</code> lo que hace es decirle a Git:
+      <strong> “olvida este merge a medias y vuelve al estado anterior”</strong>.
+      Así recuperas un repositorio limpio y puedes intentar el merge más tarde o con otra estrategia.
+    </p>
+
+    <details className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+      <summary className="cursor-pointer font-medium text-gray-900 dark:text-white">
+        Mini-guía: ¿lo necesito de verdad?
+      </summary>
+      <div className="mt-3 space-y-2">
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          ✅ Úsalo si: te aparece conflicto y no sabes resolverlo todavía, o quieres parar y volver luego.
+        </p>
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          ❌ No lo uses si: ya resolviste el conflicto y solo te falta hacer <code className="font-mono">git add</code> y <code className="font-mono">git commit</code>.
+        </p>
+      </div>
+    </details>
+
+    <p className="text-sm text-gray-500 dark:text-gray-400">
+      Consejo de profe: si te atascas, aborta el merge, respira, y repite el proceso con calma.
+      Es mejor volver a un estado limpio que “romper” el proyecto por prisas.
+    </p>
+  </div>
+</details>
+
             </div>
           </div>
         )}
 
+        {/* TAB: PRÁCTICA */}
         {activeTab === 'practice' && (
           <div className="space-y-6">
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                Ejercicio: Simulación de Conflictos
+                Práctica guiada: provocar y resolver un conflicto
               </h2>
-              
+
               <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 mb-6">
                 <h3 className="font-medium text-orange-900 dark:text-orange-100 mb-2">
                   🎯 Objetivo
                 </h3>
-                <p className="text-orange-800 dark:text-orange-200">
-                  Crear, detectar y resolver conflictos de merge en un entorno controlado.
+                <p className="text-orange-800 dark:text-orange-200 text-sm">
+                  Ver un conflicto de verdad en un archivo de texto y resolverlo siguiendo los 4 pasos.
                 </p>
               </div>
 
-              <div className="space-y-4">
-                <div className="border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-900/20 pl-4 py-3">
-                  <h4 className="font-medium text-gray-900 dark:text-white">Paso 1: Crear escenario de conflicto</h4>
-                  <div className="mt-2 bg-black rounded p-3">
-                    <pre className="text-xs text-gray-300">
-{`# Crear repositorio y archivo inicial
-git init conflict-demo
-cd conflict-demo
-echo "Precio base: 100" > config.txt
-git add config.txt
-git commit -m "initial: add base price config"
+              <div className="bg-black rounded-lg p-4 relative">
+                <pre className="text-xs text-gray-300 overflow-x-auto">
+{`# 1) Crear repo de prueba
+git init conflicto-demo
+cd conflicto-demo
+echo "Descuento: 10%" > config.txt
+git add .
+git commit -m "init: config"
 
-# Crear rama feature
-git switch -c feature-discount
-echo -e "Precio base: 100\nDescuento: 15%" > config.txt
-git add config.txt
-git commit -m "feature: add 15% discount"`}
-                    </pre>
-                  </div>
-                </div>
+# 2) Crear rama y cambiar el mismo archivo
+git switch -c feature
+echo "Descuento: 15%" > config.txt
+git add .
+git commit -m "feature: 15%"
 
-                <div className="border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-900/20 pl-4 py-3">
-                  <h4 className="font-medium text-gray-900 dark:text-white">Paso 2: Crear cambio conflictivo en main</h4>
-                  <div className="mt-2 bg-black rounded p-3">
-                    <pre className="text-xs text-gray-300">
-{`# Volver a main y hacer cambio diferente
+# 3) Volver a main y cambiar distinto
 git switch main
-echo -e "Precio base: 100\nDescuento: 20%" > config.txt
+echo "Descuento: 20%" > config.txt
+git add .
+git commit -m "main: 20%"
+
+# 4) Intentar merge (conflicto)
+git merge feature
+
+# 5) Resolver: abre config.txt, decide, borra marcadores
+# 6) Finaliza:
 git add config.txt
-git commit -m "main: add 20% discount"
-
-# Ver divergencia
-git log --oneline --graph --all`}
-                    </pre>
-                  </div>
-                </div>
-
-                <div className="border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-900/20 pl-4 py-3">
-                  <h4 className="font-medium text-gray-900 dark:text-white">Paso 3: Provocar y resolver conflicto</h4>
-                  <div className="mt-2 bg-black rounded p-3">
-                    <pre className="text-xs text-gray-300">
-{`# Intentar merge (fallará)
-git merge feature-discount
-# CONFLICT (content): Merge conflict in config.txt
-
-# Ver estado del conflicto
-git status
-cat config.txt
-
-# Resolver manualmente - abrir editor y editar:
-# Eliminar marcadores <<<<<<< ======= >>>>>>>
-# Decidir qué descuento mantener o combinar
-echo -e "Precio base: 100\nDescuento: 18% (promedio)" > config.txt
-
-# Marcar como resuelto y completar merge
-git add config.txt
-git commit -m "merge: resolve discount conflict - use 18%"
-git log --oneline --graph -5`}
-                    </pre>
-                  </div>
-                </div>
-
-                <div className="border-l-4 border-orange-500 bg-orange-50 dark:bg-orange-900/20 pl-4 py-3">
-                  <h4 className="font-medium text-gray-900 dark:text-white">Paso 4: Práctica avanzada</h4>
-                  <div className="mt-2 bg-black rounded p-3">
-                    <pre className="text-xs text-gray-300">
-{`# Crear conflicto más complejo
-git switch -c feature-taxes
-echo -e "Precio base: 100\nDescuento: 18%\nImpuesto: 8%" > config.txt
-git add config.txt
-git commit -m "feature: add tax rate"
-
-git switch main
-echo -e "Precio base: 100\nDescuento: 18%\nIVA: 21%" > config.txt
-git add config.txt  
-git commit -m "main: add IVA rate"
-
-# Merge con herramienta visual
-git merge feature-taxes
-git mergetool  # Si está configurado
-
-# O resolver manualmente siguiendo el proceso`}
-                    </pre>
-                  </div>
-                </div>
+git commit -m "merge: resolve discount conflict"`}
+                </pre>
+                <button
+                  onClick={() => copyToClipboard('git init conflicto-demo\ncd conflicto-demo\necho "Descuento: 10%" > config.txt\ngit add .\ngit commit -m "init: config"\ngit switch -c feature\necho "Descuento: 15%" > config.txt\ngit add .\ngit commit -m "feature: 15%"\ngit switch main\necho "Descuento: 20%" > config.txt\ngit add .\ngit commit -m "main: 20%"\ngit merge feature\ngit add config.txt\ngit commit -m "merge: resolve discount conflict"', 'practice')}
+                  className="absolute top-2 right-2 p-1 rounded hover:bg-gray-700"
+                  aria-label="Copiar práctica completa"
+                >
+                  <Copy className="w-4 h-4 text-gray-400" />
+                </button>
+                {copiedCode === 'practice' && (
+                  <span className="absolute bottom-2 right-2 text-xs text-green-400">¡Copiado!</span>
+                )}
               </div>
 
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4 mt-6">
+              <div className="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
                 <div className="flex items-start space-x-3">
                   <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
                   <div>
                     <h3 className="font-medium text-blue-800 dark:text-blue-200 mb-2">
-                      💡 Checklist de Resolución
+                      Checklist de conflicto (para aprobar seguro)
                     </h3>
                     <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
-                      <li>☐ Identificar todos los archivos con conflictos</li>
-                      <li>☐ Abrir cada archivo y revisar marcadores</li>
-                      <li>☐ Entender el propósito de ambos cambios</li>
-                      <li>☐ Decidir estrategia: mantener uno, combinar, o reescribir</li>
-                      <li>☐ Eliminar TODOS los marcadores {'<<<<<<< ======= >>>>>>>'}</li>
-                      <li>☐ Probar que el código funciona</li>
-                      <li>☐ Hacer git add de archivos resueltos</li>
-                      <li>☐ Commit con mensaje descriptivo</li>
-                      <li>☐ Verificar con git log que todo está correcto</li>
+                      <li>☐ Leo el mensaje de Git y hago <code className="font-mono">git status</code></li>
+                      <li>☐ Abro el archivo y entiendo qué hay arriba y abajo del separador</li>
+                      <li>☐ Elijo una opción o combino</li>
+                      <li>☐ Borro los marcadores</li>
+                      <li>☐ <code className="font-mono">git add</code> para marcar “resuelto”</li>
+                      <li>☐ <code className="font-mono">git commit</code> para terminar</li>
                     </ul>
                   </div>
                 </div>
               </div>
+
+              <div className="mt-6 flex items-start space-x-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+                <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
+                <div>
+                  <h3 className="font-medium text-yellow-800 dark:text-yellow-200 mb-1">
+                    Pregunta de examen
+                  </h3>
+                  <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                    ¿Qué dos comandos uso siempre para resolver un conflicto al final?
+                  </p>
+                </div>
+              </div>
+
+              <details className="mt-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+                <summary className="cursor-pointer font-medium text-yellow-800 dark:text-yellow-200">
+                  Ver respuesta
+                </summary>
+                <div className="mt-3 text-sm text-yellow-700 dark:text-yellow-300 space-y-2">
+                  <p>
+                    Primero <code className="font-mono">git add</code> (para marcar el archivo como resuelto)
+                    y después <code className="font-mono">git commit</code> (para terminar el merge).
+                  </p>
+                </div>
+              </details>
             </div>
           </div>
         )}
@@ -569,8 +531,8 @@ git mergetool  # Si está configurado
           disabled={isCompleted}
           className={`
             flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all
-            ${isCompleted 
-              ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
+            ${isCompleted
+              ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
               : 'bg-green-600 text-white hover:bg-green-700'
             }
           `}
@@ -582,19 +544,19 @@ git mergetool  # Si está configurado
 
       {/* Navigation */}
       <div className="flex items-center justify-between pt-8 border-t border-gray-200 dark:border-gray-700">
-        <Link 
-          to="/revert-reset" 
+        <Link
+          to="/remotes"
           className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Revert & Reset</span>
+          <span>Push, Pull y Fetch</span>
         </Link>
-        
-        <Link 
-          to="/advanced" 
+
+        <Link
+          to="/revert-reset"
           className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
         >
-          <span>Técnicas Avanzadas</span>
+          <span>Revert & Reset</span>
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
