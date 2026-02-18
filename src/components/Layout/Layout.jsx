@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from './Header'
-import Sidebar from '../Sidebar'
+import Sidebar from './Sidebar'
 import Footer from './Footer'
 
 const Layout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    if (typeof window === 'undefined') return true
+    return window.innerWidth >= 1024
+  })
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const [completedLessons, setCompletedLessons] = useState([])
@@ -25,6 +28,20 @@ const Layout = () => {
   useEffect(() => {
     const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]')
     setCompletedLessons(completed)
+  }, [])
+
+  // Keep sidebar behavior aligned with viewport changes
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSidebarOpen(true)
+      } else {
+        setSidebarOpen(false)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   const toggleSidebar = () => {
@@ -74,7 +91,6 @@ const Layout = () => {
           isCollapsed={sidebarCollapsed}
           completedLessons={completedLessons}
           onClose={() => setSidebarOpen(false)}
-          onToggleCollapse={toggleSidebarCollapse}
         />
 
         {/* Main content */}

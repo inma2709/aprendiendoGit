@@ -1,291 +1,197 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import { 
-  BookOpen,
-  Settings,
-  GitBranch,
-  MessageCircle,
-  GitCommit,
-  GitMerge,
-  Globe,
-  Terminal,
-  Users,
-  Shield,
-  Zap,
-  Code,
-  FileText,
+  CheckCircle2,
+  Clock,
+  Star,
   ChevronRight,
-  CheckCircle
+  Home,
+  X
 } from 'lucide-react'
 
-const navigationData = [
-  {
-    title: "Fundamentos",
-    items: [
-      {
-        path: "/introduccion",
-        title: "¿Qué es Git?",
-        icon: BookOpen,
-        description: "Conceptos básicos y historia",
-        difficulty: "Principiante",
-        duration: "15 min"
-      },
-      {
-        path: "/instalacion", 
-        title: "Instalación y Configuración",
-        icon: Settings,
-        description: "Prepara tu entorno de trabajo",
-        difficulty: "Principiante", 
-        duration: "20 min"
-      },
-      {
-        path: "/conceptos-fundamentales",
-        title: "Conceptos Fundamentales", 
-        icon: GitBranch,
-        description: "Working Directory, Staging Area, Repository",
-        difficulty: "Principiante",
-        duration: "25 min"
-      }
-    ]
-  },
-  {
-    title: "Workflow Básico",
-    items: [
-      {
-        path: "/commits-profesionales",
-        title: "Commits Profesionales",
-        icon: MessageCircle, 
-        description: "Comunicación efectiva en el código",
-        difficulty: "Principiante",
-        duration: "30 min"
-      },
-      {
-        path: "/comandos-basicos",
-        title: "Comandos Básicos",
-        icon: Terminal,
-        description: "add, commit, status, log",
-        difficulty: "Principiante",
-        duration: "35 min"
-      },
-      {
-        path: "/gestion-archivos",
-        title: "Gestión de Archivos",
-        icon: FileText,
-        description: "Seguimiento y control de cambios",
-        difficulty: "Intermedio",
-        duration: "25 min"
-      }
-    ]
-  },
-  {
-    title: "Ramas y Fusiones",
-    items: [
-      {
-        path: "/ramas",
-        title: "Trabajando con Ramas",
-        icon: GitBranch,
-        description: "Branching y workflows",
-        difficulty: "Intermedio", 
-        duration: "40 min"
-      },
-      {
-        path: "/merging",
-        title: "Fusiones y Conflictos",
-        icon: GitMerge,
-        description: "Merge, rebase y resolución de conflictos",
-        difficulty: "Intermedio",
-        duration: "45 min"
-      }
-    ]
-  },
-  {
-    title: "Colaboración",
-    items: [
-      {
-        path: "/repositorios-remotos",
-        title: "Repositorios Remotos",
-        icon: Globe,
-        description: "push, pull, fetch, remote",
-        difficulty: "Intermedio",
-        duration: "35 min"
-      },
-      {
-        path: "/colaboracion-equipos",
-        title: "Colaboración en Equipos",
-        icon: Users,
-        description: "GitHub, GitLab, workflows colaborativos",
-        difficulty: "Intermedio",
-        duration: "50 min"
-      }
-    ]
-  },
-  {
-    title: "Técnicas Avanzadas",
-    items: [
-      {
-        path: "/historial-avanzado",
-        title: "Manipulación del Historial",
-        icon: GitCommit,
-        description: "rebase, reset, cherry-pick",
-        difficulty: "Avanzado",
-        duration: "40 min"
-      },
-      {
-        path: "/hooks-automatizacion",
-        title: "Hooks y Automatización",
-        icon: Zap,
-        description: "Git hooks, CI/CD, automatización",
-        difficulty: "Avanzado", 
-        duration: "35 min"
-      },
-      {
-        path: "/seguridad-buenas-practicas",
-        title: "Seguridad y Buenas Prácticas",
-        icon: Shield,
-        description: "GPG, security, best practices",
-        difficulty: "Avanzado",
-        duration: "30 min"
-      }
-    ]
-  }
-]
-
-const Sidebar = ({ isOpen, completedLessons = [] }) => {
+const Sidebar = ({ isOpen, isCollapsed = false, completedLessons = [], onClose }) => {
   const location = useLocation()
 
+  // Auto-cerrar sidebar en móvil cuando cambia la ruta
+  useEffect(() => {
+    if (isOpen && window.innerWidth < 1024) { // lg breakpoint
+      onClose?.()
+    }
+  }, [location.pathname, isOpen, onClose])
+
+  // Función para manejar click en enlaces
+  const handleLinkClick = () => {
+    // Solo cerrar en móvil (pantallas menores a lg)
+    if (window.innerWidth < 1024) {
+      onClose?.()
+    }
+  }
+
+  const menuItems = [
+    {
+      category: "🎯 ESENCIALES (EMPIEZA AQUÍ)",
+      items: [
+        { path: "/introduccion", title: "¿Qué es Git?", time: "5 min", difficulty: "Principiante", icon: "🚀" },
+        { path: "/instalacion", title: "Instalación", time: "10 min", difficulty: "Principiante", icon: "⚡" },
+        { path: "/configuracion", title: "Configuración", time: "8 min", difficulty: "Principiante", icon: "⚙️" },
+        { path: "/inicializacion", title: "Mi Primer Repositorio", time: "15 min", difficulty: "Principiante", icon: "🎯" },
+        { path: "/staging-area", title: "Staging Area", time: "12 min", difficulty: "Principiante", icon: "📦" },
+        { path: "/commits", title: "Commits", time: "20 min", difficulty: "Principiante", icon: "💾" }
+      ]
+    },
+    {
+      category: "🌱 COLABORACIÓN BÁSICA",
+      items: [
+        { path: "/branching", title: "Trabajando con Ramas", time: "25 min", difficulty: "Principiante", icon: "🌿" },
+        { path: "/cloning", title: "Repositorios Remotos", time: "20 min", difficulty: "Principiante", icon: "📥" },
+        { path: "/remotes", title: "Push, Pull, Fetch", time: "25 min", difficulty: "Principiante", icon: "🌐" }
+      ]
+    },
+    {
+      category: "⚠️ CUANDO TENGAS PROBLEMAS",
+      items: [
+        { path: "/conflictos", title: "Resolver Conflictos", time: "25 min", difficulty: "Intermedio", icon: "⚔️" },
+        { path: "/revert-reset", title: "Deshacer Cambios", time: "20 min", difficulty: "Intermedio", icon: "↩️" }
+      ]
+    },
+    {
+      category: "🚀 HERRAMIENTAS ÚTILES",
+      items: [
+        { path: "/git-desktop", title: "Git Visual (Sin Terminal)", time: "20 min", difficulty: "Principiante", icon: "🖥️" },
+        { path: "/workflow", title: "Flujo Profesional", time: "30 min", difficulty: "Intermedio", icon: "🏢" },
+        { path: "/cheat-sheet", title: "Chuleta de Comandos", time: "Referencia", difficulty: "Todos", icon: "📖" },
+        { path: "/advanced", title: "Resumen subir archivos", time: "40 min", difficulty: "Todos", icon: "🚀" }
+      ]
+    }
+  ]
+
   const getDifficultyColor = (difficulty) => {
-    switch(difficulty) {
-      case 'Principiante':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-      case 'Intermedio':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-      case 'Avanzado':
-        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-      default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
+    switch (difficulty) {
+      case 'Principiante': return 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30'
+      case 'Intermedio': return 'text-yellow-600 bg-yellow-100 dark:text-yellow-400 dark:bg-yellow-900/30'
+      case 'Avanzado': return 'text-red-600 bg-red-100 dark:text-red-400 dark:bg-red-900/30'
+      case 'Todos': return 'text-purple-600 bg-purple-100 dark:text-purple-400 dark:bg-purple-900/30'
+      default: return 'text-gray-600 bg-gray-100 dark:text-gray-400 dark:bg-gray-700'
     }
   }
 
   return (
     <>
-      {/* Overlay for mobile */}
+      {/* Overlay para móvil */}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-          onClick={() => {}}
+          onClick={onClose}
         />
       )}
       
       {/* Sidebar */}
       <aside className={`
-        fixed top-16 left-0 bottom-0 w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 
-        transform transition-transform duration-300 ease-in-out z-40
+        fixed lg:relative inset-y-0 left-0 z-40
+        ${isCollapsed ? 'w-16' : 'w-80'} bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 border-r border-gray-200 dark:border-gray-700
+        transform transition-all duration-300 ease-in-out overflow-y-auto
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        lg:static lg:transform-none
+        lg:block shadow-lg
       `}>
-        <div className="h-full overflow-y-auto py-6">
+        <div className={`${isCollapsed ? 'p-2' : 'p-6'} transition-all duration-300`}>
           
-          {/* Progress Overview */}
-          <div className="px-6 mb-8">
-            <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                Tu Progreso
-              </h3>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-300">
-                  {completedLessons.length} de {navigationData.reduce((acc, section) => acc + section.items.length, 0)} lecciones
-                </span>
-                <span className="font-medium text-orange-600 dark:text-orange-400">
-                  {Math.round((completedLessons.length / navigationData.reduce((acc, section) => acc + section.items.length, 0)) * 100)}%
-                </span>
-              </div>
-              <div className="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div 
-                  className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${(completedLessons.length / navigationData.reduce((acc, section) => acc + section.items.length, 0)) * 100}%` }}
-                />
-              </div>
-            </div>
+          {/* Header del sidebar - solo en móvil */}
+          <div className="flex lg:hidden items-center justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Navegación
+            </h2>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
           </div>
 
-          {/* Navigation */}
-          <nav className="px-6">
-            {navigationData.map((section, sectionIndex) => (
-              <div key={sectionIndex} className="mb-8">
-                
-                {/* Section title */}
-                <h2 className="text-xs font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">
-                  {section.title}
-                </h2>
-                
-                {/* Section items */}
-                <ul className="space-y-2">
+          {/* Home link */}
+          <Link 
+            to="/" 
+            onClick={handleLinkClick}
+            className={`
+              flex items-center ${isCollapsed ? 'justify-center p-2' : 'space-x-3 p-3'} rounded-lg mb-6 transition-all duration-200 group border-l-4
+              ${location.pathname === '/' 
+                ? 'bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/30 dark:to-green-900/30 text-emerald-700 dark:text-emerald-300 border-l-emerald-500 shadow-md transform scale-[1.02]' 
+                : 'hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-800 dark:hover:to-gray-750 text-gray-700 dark:text-gray-300 border-l-transparent hover:border-l-gray-300 hover:shadow-sm hover:transform hover:scale-[1.01] bg-white dark:bg-gray-900/50'
+              }
+              active:scale-95 active:bg-gray-200 dark:active:bg-gray-700
+            `}
+            title={isCollapsed ? "Inicio" : ""}
+          >
+            <Home className="w-5 h-5 flex-shrink-0" />
+            {!isCollapsed && <span className="font-medium">Inicio</span>}
+          </Link>
+
+          {/* Menu sections */}
+          <nav className="space-y-6">
+            {menuItems.map((section, sectionIndex) => (
+              <div key={sectionIndex}>
+                {!isCollapsed && (
+                  <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    {section.category}
+                  </h3>
+                )}
+                <ul className={`${isCollapsed ? 'space-y-2' : 'space-y-1'}`}>
                   {section.items.map((item, itemIndex) => {
                     const isActive = location.pathname === item.path
                     const isCompleted = completedLessons.includes(item.path)
-                    const IconComponent = item.icon
                     
                     return (
                       <li key={itemIndex}>
                         <Link
                           to={item.path}
+                          onClick={handleLinkClick}
                           className={`
-                            group flex items-start p-3 rounded-lg transition-all duration-200 hover:shadow-sm
+                            flex items-center ${isCollapsed ? 'justify-center p-2' : 'space-x-3 p-3'} rounded-lg transition-all duration-200 group relative border-l-4
                             ${isActive 
-                              ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md' 
-                              : 'hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-900 dark:text-white'
+                              ? 'bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 text-blue-700 dark:text-blue-300 border-l-blue-500 shadow-md transform scale-[1.02]' 
+                              : 'hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-800 dark:hover:to-gray-750 text-gray-700 dark:text-gray-300 border-l-transparent hover:border-l-gray-300 hover:shadow-sm hover:transform hover:scale-[1.01] bg-white dark:bg-gray-900/50'
                             }
+                            active:scale-95 active:bg-gray-200 dark:active:bg-gray-700
                           `}
+                          title={isCollapsed ? item.title : ""}
                         >
-                          <div className="flex items-start flex-1">
-                            
-                            {/* Icon */}
-                            <div className={`
-                              flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mr-3 mt-0.5
-                              ${isActive 
-                                ? 'bg-white/20' 
-                                : 'bg-gray-100 dark:bg-gray-800 group-hover:bg-gray-200 dark:group-hover:bg-gray-700'
-                              }
-                            `}>
-                              <IconComponent className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-600 dark:text-gray-300'}`} />
-                            </div>
-                            
-                            {/* Content */}
+                          {/* Icon and completion indicator */}
+                          <div className={`flex items-center ${isCollapsed ? 'relative' : 'space-x-2'}`}>
+                            <span className="text-lg flex-shrink-0">{item.icon}</span>
+                            {isCompleted && (
+                              <CheckCircle2 className={`w-4 h-4 text-green-500 animate-pulse ${isCollapsed ? 'absolute -top-1 -right-1' : ''}`} />
+                            )}
+                          </div>
+                          
+                          {/* Content - only show when not collapsed */}
+                          {!isCollapsed && (
                             <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between">
-                                <h3 className={`text-sm font-medium ${isActive ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
+                              <div className="flex items-center justify-between mb-1">
+                                <p className="text-sm font-medium truncate">
                                   {item.title}
-                                </h3>
-                                {isCompleted && (
-                                  <CheckCircle className={`w-4 h-4 ${isActive ? 'text-white' : 'text-green-500'}`} />
-                                )}
+                                </p>
+                                <ChevronRight className={`
+                                  w-4 h-4 transition-all duration-200 group-hover:translate-x-1
+                                  ${isActive ? 'text-blue-500 dark:text-blue-400' : 'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300'}
+                                `} />
                               </div>
                               
-                              <p className={`text-xs mt-1 ${isActive ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'}`}>
-                                {item.description}
-                              </p>
-                              
-                              <div className="flex items-center justify-between mt-2">
+                              <div className="flex items-center space-x-2">
+                                <div className="flex items-center space-x-1">
+                                  <Clock className="w-3 h-3 text-gray-400" />
+                                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                                    {item.time}
+                                  </span>
+                                </div>
                                 <span className={`
                                   text-xs px-2 py-0.5 rounded-full font-medium
-                                  ${isActive 
-                                    ? 'bg-white/20 text-white' 
-                                    : getDifficultyColor(item.difficulty)
-                                  }
+                                  ${getDifficultyColor(item.difficulty)}
                                 `}>
                                   {item.difficulty}
                                 </span>
-                                <span className={`text-xs ${isActive ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'}`}>
-                                  {item.duration}
-                                </span>
                               </div>
                             </div>
-
-                            {/* Arrow */}
-                            <ChevronRight className={`
-                              w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity
-                              ${isActive ? 'text-white' : 'text-gray-400'}
-                            `} />
-                          </div>
+                          )}
                         </Link>
                       </li>
                     )
@@ -294,6 +200,30 @@ const Sidebar = ({ isOpen, completedLessons = [] }) => {
               </div>
             ))}
           </nav>
+
+          {/* Progress summary - only show when not collapsed */}
+          {!isCollapsed && (
+            <div className="mt-8 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg">
+              <div className="flex items-center space-x-2 mb-2">
+                <Star className="w-4 h-4 text-yellow-500" />
+                <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                  Tu progreso
+                </span>
+              </div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                {completedLessons.length}/14
+              </div>
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div 
+                  className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${Math.round((completedLessons.length / 14) * 100)}%` }}
+                />
+              </div>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                {Math.round((completedLessons.length / 14) * 100)}% completado
+              </p>
+            </div>
+          )}
         </div>
       </aside>
     </>
