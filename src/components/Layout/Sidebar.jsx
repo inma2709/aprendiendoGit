@@ -15,15 +15,21 @@ const Sidebar = ({ isOpen, isCollapsed = false, completedLessons = [], onClose }
   // Auto-cerrar sidebar en móvil cuando cambia la ruta
   useEffect(() => {
     if (isOpen && window.innerWidth < 1024) { // lg breakpoint
-      onClose?.()
+      const timer = setTimeout(() => {
+        onClose?.()
+      }, 200) // Pequeño delay para mejor UX
+      
+      return () => clearTimeout(timer)
     }
   }, [location.pathname, isOpen, onClose])
 
   // Función para manejar click en enlaces
   const handleLinkClick = () => {
     // Solo cerrar en móvil (pantallas menores a lg)
-    if (window.innerWidth < 1024) {
-      onClose?.()
+    if (window.innerWidth < 1024 && onClose) {
+      setTimeout(() => {
+        onClose()
+      }, 150)
     }
   }
 
@@ -80,33 +86,40 @@ const Sidebar = ({ isOpen, isCollapsed = false, completedLessons = [], onClose }
       {/* Overlay para móvil */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
           onClick={onClose}
         />
       )}
       
       {/* Sidebar */}
       <aside className={`
-        fixed lg:relative inset-y-0 left-0 z-40
-        ${isCollapsed ? 'w-16' : 'w-80'} bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 border-r border-gray-200 dark:border-gray-700
-        transform transition-all duration-300 ease-in-out overflow-y-auto
+        fixed lg:relative inset-y-0 left-0 z-50
+        ${isCollapsed ? 'w-16' : 'w-80'} 
+        bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 
+        border-r border-gray-200 dark:border-gray-700
+        transform transition-all duration-300 ease-in-out 
+        overflow-y-auto
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         lg:block shadow-lg
+        max-h-screen
       `}>
-        <div className={`${isCollapsed ? 'p-2' : 'p-6'} transition-all duration-300`}>
+        <div className={`${isCollapsed ? 'p-2' : 'p-6'} transition-all duration-300 min-h-full`}>
           
           {/* Header del sidebar - solo en móvil */}
-          <div className="flex lg:hidden items-center justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Navegación
-            </h2>
-            <button
-              onClick={onClose}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            >
-              <X className="w-5 h-5 text-gray-500" />
-            </button>
-          </div>
+          {!isCollapsed && (
+            <div className="flex lg:hidden items-center justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Navegación
+              </h2>
+              <button
+                onClick={onClose}
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                aria-label="Cerrar menú"
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+          )}
 
           {/* Home link */}
           <Link 
@@ -131,7 +144,7 @@ const Sidebar = ({ isOpen, isCollapsed = false, completedLessons = [], onClose }
             {menuItems.map((section, sectionIndex) => (
               <div key={sectionIndex}>
                 {!isCollapsed && (
-                  <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                  <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3 px-2">
                     {section.category}
                   </h3>
                 )}
