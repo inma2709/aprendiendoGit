@@ -12,24 +12,26 @@ import {
 const Sidebar = ({ isOpen, isCollapsed = false, completedLessons = [], onClose }) => {
   const location = useLocation()
 
-  // Auto-cerrar sidebar en móvil cuando cambia la ruta
+  // Auto-cerrar sidebar en móvil cuando cambia la ruta (con delay más largo)
   useEffect(() => {
-    if (isOpen && window.innerWidth < 1024) { // lg breakpoint
+    if (isOpen && window.innerWidth < 1024) {
+      // Delay más largo para permitir que el usuario vea la transición
       const timer = setTimeout(() => {
         onClose?.()
-      }, 200) // Pequeño delay para mejor UX
+      }, 800) // Aumentado a 800ms
       
       return () => clearTimeout(timer)
     }
   }, [location.pathname, isOpen, onClose])
 
-  // Función para manejar click en enlaces
+  // Función para manejar click en enlaces (solo cierre inmediato en click, no en navegación)
   const handleLinkClick = () => {
-    // Solo cerrar en móvil (pantallas menores a lg)
+    // En móvil, cerrar con un delay corto solo al hacer click
     if (window.innerWidth < 1024 && onClose) {
+      // Delay más corto para click directo
       setTimeout(() => {
         onClose()
-      }, 150)
+      }, 300) // Reducido para click directo
     }
   }
 
