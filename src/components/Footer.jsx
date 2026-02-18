@@ -26,10 +26,7 @@ const Footer = ({ darkMode }) => {
             </p>
             <div className={`flex items-center space-x-1 text-sm ${
               darkMode ? 'text-gray-300' : 'text-gray-600'
-            }`}>
-              <span>Hecho con</span>
-              <Heart className="w-4 h-4 text-red-500" />
-              <span>para la comunidad de desarrolladores</span>
+            }`
             </div>
           </div>
 

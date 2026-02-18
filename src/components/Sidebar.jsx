@@ -1,15 +1,32 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import { 
   BookOpen,
   CheckCircle2,
   Clock,
   Star,
   ChevronRight,
-  Home
+  Home,
+  X
 } from 'lucide-react'
 
 const Sidebar = ({ isOpen, isCollapsed, completedLessons, onClose, onToggleCollapse }) => {
   const location = useLocation()
+
+  // Auto-cerrar sidebar en móvil cuando cambia la ruta
+  useEffect(() => {
+    if (isOpen && window.innerWidth < 1024) { // lg breakpoint
+      onClose?.()
+    }
+  }, [location.pathname, isOpen, onClose])
+
+  // Función para manejar click en enlaces
+  const handleLinkClick = () => {
+    // Solo cerrar en móvil (pantallas menores a lg)
+    if (window.innerWidth < 1024) {
+      onClose?.()
+    }
+  }
 
   const menuItems = [
     {
@@ -79,15 +96,30 @@ const Sidebar = ({ isOpen, isCollapsed, completedLessons, onClose, onToggleColla
       `}>
         <div className={`${isCollapsed ? 'p-2' : 'p-6'} transition-all duration-300`}>
           
+          {/* Header del sidebar - solo en móvil */}
+          <div className="flex lg:hidden items-center justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Navegación
+            </h2>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
+          </div>
+
           {/* Home link */}
           <Link 
             to="/" 
+            onClick={handleLinkClick}
             className={`
               flex items-center ${isCollapsed ? 'justify-center p-2' : 'space-x-3 p-3'} rounded-lg mb-6 transition-all duration-200 group border-l-4
               ${location.pathname === '/' 
                 ? 'bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/30 dark:to-green-900/30 text-emerald-700 dark:text-emerald-300 border-l-emerald-500 shadow-md transform scale-[1.02]' 
                 : 'hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-800 dark:hover:to-gray-750 text-gray-700 dark:text-gray-300 border-l-transparent hover:border-l-gray-300 hover:shadow-sm hover:transform hover:scale-[1.01] bg-white dark:bg-gray-900/50'
               }
+              active:scale-95 active:bg-gray-200 dark:active:bg-gray-700
             `}
             title={isCollapsed ? "Inicio" : ""}
           >
@@ -113,12 +145,14 @@ const Sidebar = ({ isOpen, isCollapsed, completedLessons, onClose, onToggleColla
                       <li key={itemIndex}>
                         <Link
                           to={item.path}
+                          onClick={handleLinkClick}
                           className={`
                             flex items-center ${isCollapsed ? 'justify-center p-2' : 'space-x-3 p-3'} rounded-lg transition-all duration-200 group relative border-l-4
                             ${isActive 
                               ? 'bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 text-blue-700 dark:text-blue-300 border-l-blue-500 shadow-md transform scale-[1.02]' 
                               : 'hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-800 dark:hover:to-gray-750 text-gray-700 dark:text-gray-300 border-l-transparent hover:border-l-gray-300 hover:shadow-sm hover:transform hover:scale-[1.01] bg-white dark:bg-gray-900/50'
                             }
+                            active:scale-95 active:bg-gray-200 dark:active:bg-gray-700
                           `}
                           title={isCollapsed ? item.title : ""}
                         >

@@ -13,10 +13,10 @@ const Footer = () => {
             </div>
             <div>
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                Inmaculada Contreras
+                Inmaculada Contreras @InmaContreras
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Docente en Diseño Web y Programación
+                Docente en Diseño Web y Programación. 
               </p>
             </div>
           </div>
