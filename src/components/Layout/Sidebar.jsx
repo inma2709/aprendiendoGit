@@ -18,7 +18,7 @@ const Sidebar = ({ isOpen, isCollapsed = false, completedLessons = [], onClose }
       // Delay más largo para permitir que el usuario vea la transición
       const timer = setTimeout(() => {
         onClose?.()
-      }, 800) // Aumentado a 800ms
+      }, 1600) // Aumentado a 1600ms para móviles
       
       return () => clearTimeout(timer)
     }
@@ -31,7 +31,7 @@ const Sidebar = ({ isOpen, isCollapsed = false, completedLessons = [], onClose }
       // Delay más corto para click directo
       setTimeout(() => {
         onClose()
-      }, 300) // Reducido para click directo
+      }, 1200) // Aumentado para que no se cierre tan rápido en móviles
     }
   }
 
