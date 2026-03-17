@@ -95,9 +95,7 @@ const IntroduccionPage = () => {
                 <li>Cada copia es un respaldo completo</li>
                 <li>Las operaciones son súper rápidas</li>
               </ul>
-              <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-700 rounded text-center">
-                <span className="text-sm text-gray-600 dark:text-gray-400">💡 Espacio reservado para diagrama: Git Distribuido vs Centralizado</span>
-              </div>
+             
             </div>
           </details>
         </section>
@@ -218,11 +216,8 @@ const IntroduccionPage = () => {
                 </ul>
               </div>
 
-              <div className="text-center">
-                <span className="text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded">
-                  🎨 Espacio reservado para infografía: Caos vs Orden
-                </span>
-              </div>
+              
+              
             </div>
           </details>
         </section>
@@ -238,10 +233,8 @@ const IntroduccionPage = () => {
               "📁 Crear y gestionar repositorios",
               "💾 Hacer commits efectivos y leer el historial",
               "🌿 Trabajar con branches (ramas) para organizar tu trabajo",
-              "🤝 Colaborar con otros desarrolladores",
-              "🔄 Manejar repositorios remotos (GitHub, GitLab, etc.)",
-              "⚡ Resolver conflictos como un pro",
-              "🚀 Técnicas avanzadas para workflows profesionales"
+              "🔄 Clonar repositorios remotos",
+             
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
                 <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />

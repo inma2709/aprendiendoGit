@@ -157,15 +157,76 @@ const InstalacionPage = () => {
                     </div>
                   </div>
                 </div>
+                <div className="flex items-start gap-3">
+  <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+    3
+  </div>
+
+  <div>
+    <p className="text-gray-700 dark:text-gray-300 mb-3">
+      Durante la instalación aparecerán varias pantallas de configuración. 
+      La más importante es la que permite <strong>añadir Git al PATH del sistema</strong>.
+    </p>
+
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-3">
+      <p className="font-semibold mb-2">¿Qué significa añadir Git al PATH?</p>
+      <p className="text-gray-600 dark:text-gray-400 text-sm">
+        El PATH es una lista de programas que el sistema puede ejecutar desde la terminal.
+        Si Git está en el PATH podrás usar comandos como:
+      </p>
+
+      <div className="bg-gray-900 text-green-400 p-3 rounded mt-2 font-mono text-sm">
+        git status<br/>
+        git clone<br/>
+        git commit
+      </div>
+
+      <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">
+        desde cualquier carpeta del ordenador.
+      </p>
+    </div>
+
+    <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+      <p className="font-semibold text-yellow-800 dark:text-yellow-300 mb-2">
+        Configuración recomendada durante el instalador
+      </p>
+
+      <ol className="list-decimal list-inside text-sm text-gray-700 dark:text-gray-300 space-y-2">
+        <li>Ejecuta el instalador descargado (<strong>Git-setup.exe</strong>).</li>
+
+        <li>Pulsa <strong>Next</strong> en las primeras pantallas.</li>
+
+        <li>Cuando aparezca la pantalla <strong>Adjusting your PATH environment</strong>.</li>
+
+        <li>Selecciona la opción:
+          <div className="bg-gray-900 text-green-400 p-2 rounded font-mono text-xs mt-1">
+            Git from the command line and also from 3rd-party software
+          </div>
+        </li>
+
+        <li>Pulsa <strong>Next</strong>.</li>
+
+        <li>En el resto de pantallas puedes dejar las opciones por defecto.</li>
+
+        <li>Finalmente pulsa <strong>Install</strong>.</li>
+      </ol>
+    </div>
+
+  </div>
+</div>
 
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
                     3
                   </div>
+                  
                   <div>
-                    <p className="text-gray-700 dark:text-gray-300">
-                      Abre una nueva ventana de <code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Command Prompt</code> o <code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">PowerShell</code> y verifica la instalación:
-                    </p>
+                     <ol className="list-decimal list-inside text-gray-700 dark:text-gray-300 text-sm space-y-2">
+      <li>Pulsa la tecla <strong>Windows</strong>.</li>
+      <li>Escribe <strong>PowerShell</strong>.</li>
+      <li>Abre la aplicación.</li>
+      <li>Escribe el siguiente comando:</li>
+    </ol>
                     <div className="mt-3 bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm">
                       <div className="flex items-center gap-2 mb-2">
                         <Terminal className="w-4 h-4" />
@@ -173,6 +234,7 @@ const InstalacionPage = () => {
                       </div>
                       git --version
                     </div>
+                    
                     <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">
                       Deberías ver algo como: <code className="text-green-600 dark:text-green-400">git version 2.42.0</code>
                     </p>
@@ -240,14 +302,7 @@ const InstalacionPage = () => {
                   <div className="w-8 h-8 bg-gray-600 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
                     3
                   </div>
-                  <div>
-                    <p className="text-gray-700 dark:text-gray-300 mb-2">
-                      Verifica la instalación:
-                    </p>
-                    <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm">
-                      git --version
-                    </div>
-                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -310,14 +365,7 @@ const InstalacionPage = () => {
                 <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
                   ✓
                 </div>
-                <div>
-                  <p className="text-gray-700 dark:text-gray-300 mb-2">
-                    Verifica la instalación:
-                  </p>
-                  <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm">
-                    git --version
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>

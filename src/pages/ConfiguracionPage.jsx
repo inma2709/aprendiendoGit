@@ -1,14 +1,23 @@
 import { useState, useEffect } from 'react'
 import { Link, useOutletContext } from 'react-router-dom'
-import { CheckCircle2, ArrowRight, ArrowLeft, User, Mail, Settings, Clock, BookOpen, Terminal, Copy } from 'lucide-react'
+import {
+  CheckCircle2,
+  ArrowRight,
+  ArrowLeft,
+  User,
+  Mail,
+  Clock,
+  BookOpen,
+  Terminal,
+  Copy,
+  AlertTriangle,
+  CheckCircle
+} from 'lucide-react'
 
 const ConfiguracionPage = () => {
   const { markLessonCompleted } = useOutletContext()
   const [isCompleted, setIsCompleted] = useState(false)
-  const [userInfo, setUserInfo] = useState({
-    name: '',
-    email: ''
-  })
+  const [copied, setCopied] = useState('')
 
   useEffect(() => {
     const completed = JSON.parse(localStorage.getItem('completedLessons') || '[]')
@@ -20,13 +29,31 @@ const ConfiguracionPage = () => {
     setIsCompleted(true)
   }
 
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text)
+  const copyToClipboard = async (text, id) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(id)
+      setTimeout(() => setCopied(''), 1500)
+    } catch (error) {
+      console.error('No se pudo copiar el texto:', error)
+    }
   }
+
+  const CodeBlock = ({ code, id }) => (
+    <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm flex items-start justify-between gap-3">
+      <pre className="whitespace-pre-wrap break-words">{code}</pre>
+      <button
+        onClick={() => copyToClipboard(code, id)}
+        className="p-2 hover:bg-gray-700 rounded transition-colors flex-shrink-0"
+        title="Copiar comando"
+      >
+        {copied === id ? <CheckCircle className="w-4 h-4 text-green-300" /> : <Copy className="w-4 h-4" />}
+      </button>
+    </div>
+  )
 
   return (
     <div className="max-w-4xl mx-auto">
-      
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-4">
@@ -35,10 +62,12 @@ const ConfiguracionPage = () => {
           <ArrowRight className="w-4 h-4" />
           <span>Lección 3</span>
         </div>
+
         <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200 mb-4">
           ⚙️ Configurar Git
         </h1>
-        <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+
+        <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 flex-wrap">
           <span className="flex items-center gap-1">
             <Clock className="w-4 h-4" />
             8 minutos
@@ -60,229 +89,350 @@ const ConfiguracionPage = () => {
         <div className="text-center">
           <div className="text-6xl mb-4">⚙️</div>
           <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-            Personaliza tu Git
+            Vamos a dejar Git listo para trabajar
           </h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Vamos a configurar Git con tu información para que todos tus commits estén correctamente identificados.
+            En esta lección vas a configurar tu nombre, tu correo y la rama inicial por defecto.
+            Así evitarás problemas habituales al empezar, especialmente la diferencia entre
+            <strong> main</strong> y <strong>master</strong>.
           </p>
         </div>
       </div>
 
-      {/* Configuration Form */}
+      {/* Antes de empezar */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">
-          👤 Configuración básica
+          🖥️ Antes de escribir comandos
         </h2>
-        
-        <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-6 rounded-r-lg mb-6">
+
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 space-y-4">
+          <p className="text-gray-700 dark:text-gray-300">
+            Vamos a escribir los comandos en la <strong>terminal integrada de Visual Studio Code</strong>.
+          </p>
+
+          <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded-r-lg">
+            <p className="text-blue-800 dark:text-blue-300 font-medium mb-2">
+              Paso a paso
+            </p>
+            <ol className="list-decimal list-inside text-blue-900 dark:text-blue-200 space-y-2 text-sm">
+              <li>Abre <strong>Visual Studio Code</strong>.</li>
+              <li>En el menú superior, pulsa <strong>Terminal</strong>.</li>
+              <li>Después pulsa <strong>Nueva Terminal</strong>.</li>
+              <li>
+                También puedes usar el atajo:
+                <code className="ml-2 bg-white dark:bg-gray-800 px-2 py-1 rounded border border-blue-200 dark:border-blue-700">
+                  Ctrl + Shift + Ñ
+                </code>
+                <span className="block mt-1 text-xs opacity-80">
+                  En algunos teclados puede variar ligeramente, pero el objetivo es abrir la terminal inferior de VS Code.
+                </span>
+              </li>
+            </ol>
+          </div>
+
+          <div className="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <p className="text-gray-700 dark:text-gray-300 text-sm">
+              Cuando la terminal esté abierta, verás una zona en la parte inferior donde podrás escribir comandos.
+              Ahí es donde vamos a introducir la configuración de Git.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Por qué configurar */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+          🎯 ¿Por qué hay que configurar Git?
+        </h2>
+
+        <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-6 rounded-r-lg">
           <p className="text-blue-800 dark:text-blue-300 mb-2 font-medium">
-            🎯 ¿Por qué es importante?
+            Git guarda información sobre quién hace cada cambio
           </p>
           <p className="text-blue-700 dark:text-blue-200">
-            Cada commit que hagas incluirá tu nombre y email. Esto es crucial para el trabajo en equipo y para mantener un historial limpio del proyecto.
+            Cada commit incluirá tu nombre y tu correo electrónico. Eso permite identificar quién hizo cada cambio,
+            mantener un historial claro y trabajar correctamente con GitHub, GitLab o proyectos en equipo.
           </p>
         </div>
+      </section>
+
+      {/* Paso 1 */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+          1️⃣ Configurar tu nombre y tu correo
+        </h2>
 
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-blue-600" />
-              1. Configurar tu nombre
+              Comando para tu nombre
             </h3>
-            
+
             <p className="text-gray-600 dark:text-gray-300 mb-3">
-              Este es el nombre que aparecerá en todos tus commits:
+              Escribe este comando en la terminal y sustituye <strong>"Tu Nombre"</strong> por tu nombre real:
             </p>
-            
-            <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm mb-3 relative">
-              <div className="flex items-center justify-between">
-                <span>git config --global user.name "Tu Nombre Completo"</span>
-                <button
-                  onClick={() => copyToClipboard('git config --global user.name "Tu Nombre Completo"')}
-                  className="p-1 hover:bg-gray-700 rounded"
-                  title="Copiar comando"
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-            
-            <div className="bg-yellow-100 dark:bg-yellow-900/20 p-3 rounded border-l-4 border-yellow-500">
+
+            <CodeBlock
+              id="user-name"
+              code={`git config --global user.name "Tu Nombre"`}
+            />
+
+            <div className="mt-4 bg-yellow-100 dark:bg-yellow-900/20 p-3 rounded border-l-4 border-yellow-500">
               <p className="text-yellow-800 dark:text-yellow-300 text-sm">
-                💡 <strong>Ejemplo:</strong> <code>git config --global user.name "Juan Pérez"</code>
+                <strong>Ejemplo:</strong> <code>git config --global user.name "Ana Pérez"</code>
               </p>
             </div>
+
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
+              Este nombre será el que aparezca en tus commits.
+            </p>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
               <Mail className="w-5 h-5 text-green-600" />
-              2. Configurar tu email
+              Comando para tu correo
             </h3>
-            
+
             <p className="text-gray-600 dark:text-gray-300 mb-3">
-              Usa el mismo email que usas en GitHub, GitLab o tu plataforma de Git:
+              Ahora escribe este comando y sustituye <strong>"tu.correo@ejemplo.com"</strong> por tu correo:
             </p>
-            
-            <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm mb-3 relative">
-              <div className="flex items-center justify-between">
-                <span>git config --global user.email "tu@email.com"</span>
-                <button
-                  onClick={() => copyToClipboard('git config --global user.email "tu@email.com"')}
-                  className="p-1 hover:bg-gray-700 rounded"
-                  title="Copiar comando"
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-            
-            <div className="bg-yellow-100 dark:bg-yellow-900/20 p-3 rounded border-l-4 border-yellow-500">
+
+            <CodeBlock
+              id="user-email"
+              code={`git config --global user.email "tu.correo@ejemplo.com"`}
+            />
+
+            <div className="mt-4 bg-yellow-100 dark:bg-yellow-900/20 p-3 rounded border-l-4 border-yellow-500">
               <p className="text-yellow-800 dark:text-yellow-300 text-sm">
-                💡 <strong>Ejemplo:</strong> <code>git config --global user.email "juan.perez@email.com"</code>
+                <strong>Importante:</strong> si vas a usar GitHub, conviene poner el mismo correo que usas en tu cuenta.
+              </p>
+            </div>
+
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
+              Este correo también quedará asociado a tus commits.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Rama main */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+          2️⃣ Evitar el problema entre master y main
+        </h2>
+
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 space-y-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-amber-500 mt-1 flex-shrink-0" />
+            <div>
+              <p className="text-gray-700 dark:text-gray-300">
+                Uno de los errores más frecuentes al empezar es que Git cree repositorios con la rama inicial
+                llamada <strong>master</strong>, mientras que en muchos tutoriales, plataformas y proyectos se usa
+                <strong> main</strong>.
               </p>
             </div>
           </div>
+
+          <p className="text-gray-700 dark:text-gray-300">
+            Para evitar esa confusión desde el principio, vamos a decirle a Git que cree los nuevos repositorios con
+            <strong> main</strong> como rama inicial por defecto.
+          </p>
+
+          <CodeBlock
+            id="default-branch"
+            code={`git config --global init.defaultBranch main`}
+          />
+
+          <div className="bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 p-4 rounded-r-lg">
+            <p className="text-green-800 dark:text-green-300 text-sm">
+              A partir de ese momento, cuando crees un repositorio nuevo con <code>git init</code>,
+              la rama inicial será <strong>main</strong>.
+            </p>
+          </div>
+
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Esto no cambia repositorios antiguos; afecta sobre todo a los que crees a partir de ahora.
+          </p>
         </div>
       </section>
 
-      {/* Verification */}
+      {/* Resumen práctico */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">
-          ✅ Verificar configuración
+          3️⃣ Los tres comandos que debes introducir ahora
         </h2>
-        
-        <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-xl p-6">
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            Para verificar que todo está configurado correctamente:
+
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900/50 dark:to-gray-800 rounded-xl p-6 space-y-4">
+          <p className="text-gray-700 dark:text-gray-300">
+            Introduce en la terminal esta configuración, cambiando los datos de ejemplo por los tuyos:
           </p>
-          
-          <div className="space-y-4">
-            <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Ver tu configuración completa:</p>
-              <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm flex items-center justify-between">
-                <span>git config --list</span>
-                <button
-                  onClick={() => copyToClipboard('git config --list')}
-                  className="p-1 hover:bg-gray-700 rounded"
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-            
-            <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Ver solo nombre y email:</p>
-              <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm">
-                <div className="mb-1 flex items-center justify-between">
-                  <span>git config user.name</span>
-                  <button
-                    onClick={() => copyToClipboard('git config user.name')}
-                    className="p-1 hover:bg-gray-700 rounded"
-                  >
-                    <Copy className="w-4 h-4" />
-                  </button>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>git config user.email</span>
-                  <button
-                    onClick={() => copyToClipboard('git config user.email')}
-                    className="p-1 hover:bg-gray-700 rounded"
-                  >
-                    <Copy className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
+
+          <CodeBlock
+            id="all-config"
+            code={`git config --global user.name "Tu Nombre"
+git config --global user.email "tu.correo@ejemplo.com"
+git config --global init.defaultBranch main`}
+          />
+
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <p className="text-gray-700 dark:text-gray-300 text-sm">
+              Con estos comandos estás estableciendo tu nombre, tu correo electrónico y la rama inicial por defecto
+              a nivel global en tu ordenador.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Additional Config */}
+      {/* Verificación */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">
-          🎨 Configuración adicional (Opcional)
+          ✅ Verificar que se ha guardado correctamente
         </h2>
-        
+
+        <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-xl p-6 space-y-5">
+          <p className="text-gray-700 dark:text-gray-300">
+            Para comprobar que Git ha guardado bien tu información, ejecuta estos comandos uno por uno:
+          </p>
+
+          <div>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+              Para ver tu nombre:
+            </p>
+            <CodeBlock
+              id="verify-name"
+              code={`git config --global user.name`}
+            />
+          </div>
+
+          <div>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+              Para ver tu correo electrónico:
+            </p>
+            <CodeBlock
+              id="verify-email"
+              code={`git config --global user.email`}
+            />
+          </div>
+
+          <div>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+              Para comprobar la rama inicial por defecto:
+            </p>
+            <CodeBlock
+              id="verify-branch"
+              code={`git config --global init.defaultBranch`}
+            />
+          </div>
+
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <p className="text-gray-700 dark:text-gray-300 mb-2">
+              <strong>Si todo ha ido bien:</strong>
+            </p>
+            <ul className="list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
+              <li>verás tu nombre al consultar <code>user.name</code>,</li>
+              <li>verás tu correo al consultar <code>user.email</code>,</li>
+              <li>y verás <code>main</code> al consultar <code>init.defaultBranch</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Ver configuración completa */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+          🔎 Ver toda tu configuración de Git
+        </h2>
+
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+          <p className="text-gray-600 dark:text-gray-300 mb-3">
+            Si quieres ver toda la configuración guardada por Git:
+          </p>
+
+          <CodeBlock
+            id="git-config-list"
+            code={`git config --list`}
+          />
+
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
+            Este comando muestra muchas opciones, así que para empezar no hace falta memorizarlo.
+            Lo importante ahora es que tu nombre, tu email y <code>main</code> estén bien configurados.
+          </p>
+        </div>
+      </section>
+
+      {/* Opcional */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">
+          🎨 Configuración adicional (opcional)
+        </h2>
+
         <details className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg mb-4">
           <summary className="p-4 font-semibold text-gray-800 dark:text-gray-200 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">
-            Editor de texto por defecto
+            Usar Visual Studio Code como editor por defecto
           </summary>
           <div className="p-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
-            <p className="text-gray-700 dark:text-gray-300 mb-3">
-              Configura tu editor favorito para mensajes de commit:
+            <p className="text-gray-700 dark:text-gray-300">
+              Esto es útil cuando Git necesite abrir un editor para ciertos mensajes:
             </p>
-            <div className="space-y-2">
-              <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                <div className="font-medium text-gray-800 dark:text-gray-200 mb-1">Visual Studio Code:</div>
-                <code className="text-sm">git config --global core.editor "code --wait"</code>
-              </div>
-              <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                <div className="font-medium text-gray-800 dark:text-gray-200 mb-1">Vim:</div>
-                <code className="text-sm">git config --global core.editor vim</code>
-              </div>
-              <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                <div className="font-medium text-gray-800 dark:text-gray-200 mb-1">Nano:</div>
-                <code className="text-sm">git config --global core.editor nano</code>
-              </div>
-            </div>
+            <CodeBlock
+              id="core-editor"
+              code={`git config --global core.editor "code --wait"`}
+            />
           </div>
         </details>
 
         <details className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
           <summary className="p-4 font-semibold text-gray-800 dark:text-gray-200 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">
-            Configuraciones útiles
+            Activar colores en la terminal
           </summary>
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-            <div className="space-y-3">
-              <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                <div className="font-medium text-gray-800 dark:text-gray-200 mb-1">Colores en la terminal:</div>
-                <code className="text-sm">git config --global color.ui auto</code>
-              </div>
-              <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                <div className="font-medium text-gray-800 dark:text-gray-200 mb-1">Rama por defecto:</div>
-                <code className="text-sm">git config --global init.defaultBranch main</code>
-              </div>
-            </div>
+            <CodeBlock
+              id="color-ui"
+              code={`git config --global color.ui auto`}
+            />
           </div>
         </details>
       </section>
 
-      {/* Completion */}
+      {/* Cierre */}
       <section className="mb-12">
         <div className="bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-8 text-white text-center">
-          <h2 className="text-2xl font-bold mb-4">🎉 ¡Git configurado!</h2>
+          <h2 className="text-2xl font-bold mb-4">🎉 Git ya está configurado</h2>
           <p className="text-green-100 mb-6 max-w-2xl mx-auto">
-            Perfecto. Ya tienes Git configurado con tu información personal. Ahora estás listo para crear tu primer repositorio y hacer tu primer commit.
+            Ya has preparado Git correctamente. Tienes tu nombre, tu correo y la rama inicial
+            configurados. Con esto evitamos desde el principio uno de los fallos más comunes:
+            trabajar unas veces con <strong>master</strong> y otras con <strong>main</strong>.
           </p>
-          
+
           {!isCompleted && (
             <button
               onClick={handleComplete}
               className="inline-flex items-center gap-2 px-6 py-3 bg-white text-green-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors mb-4"
             >
               <CheckCircle2 className="w-5 h-5" />
-              Marcar como Completado
+              Marcar como completado
             </button>
           )}
         </div>
       </section>
 
-      {/* Navigation */}
+      {/* Navegación */}
       <div className="flex justify-between items-center pt-8 border-t border-gray-200 dark:border-gray-700">
-        <Link 
+        <Link
           to="/instalacion"
           className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Anterior: Instalación
         </Link>
-        
-        <Link 
+
+        <Link
           to="/inicializacion"
           className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
         >
-          Siguiente: Mi Primer Repositorio
+          Siguiente: Mi primer repositorio
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
